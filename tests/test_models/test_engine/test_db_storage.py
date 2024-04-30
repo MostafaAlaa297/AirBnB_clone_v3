@@ -67,6 +67,22 @@ test_db_storage.py'])
             self.assertTrue(len(func[1].__doc__) >= 1,
                             "{:s} method needs a docstring".format(func[0]))
 
+     def test_count_all_objects(self):
+        # Test the count() method for all objects
+        self.assertIsInstance(storage.count(), int)
+
+    def test_count_state_objects(self):
+        # Test the count() method for State objects
+        self.assertIsInstance(storage.count(State), int)
+
+    def test_get_first_state(self):
+        # Test the get() method to retrieve the first State object
+        state_objects = storage.all(State)
+        if state_objects:
+            first_state_id = list(state_objects.values())[0].id
+            self.assertEqual(storage.get(State, first_state_id).id, first_state_id)
+        else:
+            self.fail("No State objects found")
 
 class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""
