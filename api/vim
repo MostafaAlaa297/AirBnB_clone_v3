@@ -1,9 +1,0 @@
-#!/usr/bin/python3
-
-"""
-views initialization
-"""
-
-from flask import Flask
-
-app_views = Blueprint("app_views", __name__)
