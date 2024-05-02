@@ -17,10 +17,9 @@ def teardown(exception):
     storage.close()
 
 
-@app.notfound
-def notfound(exception):
+@app.errorhandler(404)
+def not_found(exception):
     return jsonify({"error": "Not found"}), 404
-
 
 if __name__ == "__main__":
     host = os.getenv('HBNB_API_HOST', '0.0.0.0')
