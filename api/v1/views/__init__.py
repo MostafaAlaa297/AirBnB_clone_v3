@@ -4,10 +4,7 @@ Initializzation Module
 """
 
 from flask import Blueprint
+
+app_views = Blueprint("views", __name__, url_prefix='/api/v1')
+
 from .index import *
-
-app_views = Blueprint("views", __name__)
-
-@app_views.route("/")
-def app_views():
-    return "App views"
