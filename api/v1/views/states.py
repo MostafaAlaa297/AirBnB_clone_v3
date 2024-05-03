@@ -2,7 +2,7 @@
 """
 State model
 """
-from .views import app_views
+from . import app_views
 from flask import abort, jsonify, request
 from models import storage
 from models.state import State
@@ -10,6 +10,7 @@ from models.state import State
 
 @app_views.route("/states", methods=['GET'])
 def list_state(exception):
+    """list states"""
     all_state = []
     for state in storage.all(State).values():
         all_state.append(state)
@@ -19,6 +20,7 @@ def list_state(exception):
 
 @app_views.route("/states/<state_id>", methods=['GET'])
 def get_state(state_id):
+    """get a state"""
     state = storage.get(State, state_id)
     if state is None:
         abort(404)
@@ -27,7 +29,8 @@ def get_state(state_id):
 
 
 @app_views.route("/states/<state_id>", methods=['DELETE'])
-def delte_state(state_id):
+def delete_state(state_id):
+    """delete a state"""
     state = storage.get(State, state_id)
     if state is None:
         abort(404)
@@ -38,6 +41,7 @@ def delte_state(state_id):
 
 @app_views.route("/states", methods=['POST'])
 def add_state(exception):
+    """add a state"""
     if not request.json:
         abort(400)
         return jsonify({"error": "Not a JSON"})
@@ -52,6 +56,7 @@ def add_state(exception):
 
 @app_views.route("/states/<state_id>", methods=['POST'])
 def update_state(state_id):
+    """update a state"""
     state = storage.get('State', state_id)
     if state is None:
         abort(404)
