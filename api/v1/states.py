@@ -2,7 +2,7 @@
 """
 State model
 """
-from api.v1.views import app_views
+from .views import app_views
 from flask import abort, jsonify, request
 from models import storage
 from models.state import State
@@ -11,7 +11,7 @@ from models.state import State
 @app_views.route("/states", methods=['GET'])
 def list_state(exception):
     all_state = []
-    for state in storage.all(State).values();
+    for state in storage.all(State).values():
         all_state.append(state)
 
     return jsonfiy(all_state)
@@ -28,7 +28,7 @@ def get_state(state_id):
 
 @app_views.route("/states/<state_id>", methods=['DELETE'])
 def delte_state(state_id):
-    state = storage.get(State, state_id))
+    state = storage.get(State, state_id)
     if state is None:
         abort(404)
     storage.delete(state)
@@ -52,7 +52,7 @@ def add_state(exception):
 
 @app_views.route("/states/<state_id>", methods=['POST'])
 def update_state(state_id):
-     state = storage.get('State', state_id)
+    state = storage.get('State', state_id)
     if state is None:
         abort(404)
     if not request.json:
