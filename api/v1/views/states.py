@@ -2,23 +2,21 @@
 """
 State model
 """
-from . import app_views
+from api.v1.views import app_views
 from flask import abort, jsonify, request
 from models import storage
 from models.state import State
 
-
-@app_views.route("/states", methods=['GET'])
-def list_state(exception):
+@app_views.route('/states', methods=['GET'])
+def list_state():
     """list states"""
     all_states = []
     for state in storage.all(State).values():
-        all_states.append(state)
+        all_states.append(state.to_dict())
 
-    return jsonify([state.to_dict() for state in all_states])
+    return jsonify(all_states)
 
-
-@app_views.route("/states/<state_id>", methods=['GET'])
+@app_views.route('/states/<state_id>', methods=['GET'])
 def get_state(state_id):
     """get a state"""
     state = storage.get(State, state_id)
@@ -27,7 +25,7 @@ def get_state(state_id):
     return jsonify(state.to_dict())
 
 
-@app_views.route("/states/<state_id>", methods=['DELETE'])
+@app_views.route('/states/<state_id>', methods=['DELETE'], strict_slashes=False)
 def delete_state(state_id):
     """delete a state"""
     state = storage.get(State, state_id)
@@ -36,10 +34,9 @@ def delete_state(state_id):
     storage.delete(state)
     return jsonify({}), 200
 
-
-@app_views.route("/states", methods=['POST'])
-def add_state(exception):
-    """add a state"""
+@app_views.route('/states', methods=['POST'], strict_slashes=False)
+def add_state():
+    """ Add a state"""
     if not request.json:
         abort(400)
         return jsonify({"error": "Not a JSON"})
@@ -51,8 +48,7 @@ def add_state(exception):
     return jsonify(new_s.to_dict()), 201
 
 
-
-@app_views.route("/states/<state_id>", methods=['POST'])
+@app_views.route('/states/<state_id>', methods=['PUT'])
 def update_state(state_id):
     """update a state"""
     state = storage.get('State', state_id)
